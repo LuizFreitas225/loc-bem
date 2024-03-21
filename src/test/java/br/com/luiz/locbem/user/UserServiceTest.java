@@ -97,7 +97,7 @@ public class UserServiceTest {
     void update_doNotCreateIfEmailIsInUse() {
         incompleteUser.setEmail("atech@gmial.com.br");
 
-        BDDMockito.when(userRepository.findById(ArgumentMatchers.any(long.class))).thenReturn(Optional.of(fullUser));
+        BDDMockito.when(userRepository.findByEmail(ArgumentMatchers.any(String.class))).thenReturn(fullUser);
         BDDMockito.when(userRepository.existsByEmail(ArgumentMatchers.any(String.class))).thenReturn(true);
         incompleteUser.setId(fullUser.getId());
         Assertions.assertThatThrownBy(() -> userService.update(incompleteUser)).isInstanceOf(EmailInUseException.class);

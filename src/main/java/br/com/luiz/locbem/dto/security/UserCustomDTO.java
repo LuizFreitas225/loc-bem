@@ -1,25 +1,31 @@
 package br.com.luiz.locbem.dto.security;
 
+import br.com.luiz.locbem.model.Perfil;
 import br.com.luiz.locbem.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class UserCustomDTO implements UserDetails {
 
     private String login;
     private String password;
+    private String authority;
 
     public UserCustomDTO(User user) {
         this.login = user.getEmail();
         this.password = user.getPassword();
+        this.authority = user.getPerfil().getAuthority();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        return null;
+        return new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority(authority)));
     }
 
     @Override

@@ -15,7 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = " SELECT p FROM User p "
             + " WHERE LOWER (p.name ) LIKE %:searchTerm% "
-            + " OR LOWER (p.email) LIKE %:searchTerm% "
-            + " OR LOWER (p.userName) LIKE %:searchTerm% ")
+            + " OR LOWER (p.email) LIKE %:searchTerm%")
     Page<User> findAByNameOrEmailOrUserName(PageRequest pageRequest, String searchTerm);
 }

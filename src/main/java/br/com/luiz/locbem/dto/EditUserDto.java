@@ -9,10 +9,11 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Data
 public class EditUserDto {
-    @NotNull(message =  ErrorMessage.ID_IS_MANDATORY)
+    @NotNull(message = ErrorMessage.ID_IS_MANDATORY)
     private Long id;
     @NotBlank(message = ErrorMessage.NAME_IS_MANDATORY)
     private String name;
@@ -21,9 +22,14 @@ public class EditUserDto {
     private String email;
     @NotBlank(message = ErrorMessage.PASSWORD_IS_MANDATORY)
     private String password;
-    @NotBlank(message = ErrorMessage.USER_NAME_IS_MANDATORY)
-    private String userName;
-    @NotNull(message = ErrorMessage.STATUS_IS_MANDATORY)
-    @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    @NotBlank(message = ErrorMessage.CPF_IS_MANDATORY)
+    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = ErrorMessage.CPF_IS_INVALID)
+    private String cpf;
+    @NotBlank(message = ErrorMessage.CEP_IS_MANDATORY)
+    @Pattern(regexp = "\\d{5}-\\d{3}", message = ErrorMessage.CEP_IS_INVALID)
+    private String cep;
+    @NotBlank(message = ErrorMessage.COORDINATE_IS_MANDATORY)
+    private String coordinateY;
+    @NotBlank(message = ErrorMessage.COORDINATE_IS_MANDATORY)
+    private String coordinateX;
 }

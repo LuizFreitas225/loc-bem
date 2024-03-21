@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,8 +38,14 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    private String userName;
+    private String cpf;
+    private String cep;
+    private String coordinateY;
+    private String coordinateX;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
+
+    @Enumerated(EnumType.STRING)
+    private Perfil perfil = Perfil.USER;
 }

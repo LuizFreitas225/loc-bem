@@ -12,7 +12,6 @@ public final class UserMockUtil {
         user.setName("Luiz");
         user.setPassword("senha1");
         user.setStatus(Status.ACTIVE);
-        user.setUserName("luizNicolau");
         user.setEmail("luiz@atech.com");
         user.setCreateDate(LocalDateTime.now());
         user.setLastModifiedDate(LocalDateTime.now());
@@ -25,7 +24,6 @@ public final class UserMockUtil {
         user.setName("Luiz");
         user.setPassword("senha1");
         user.setStatus(Status.ACTIVE);
-        user.setUserName("luizNicolau");
         user.setEmail("luiz@atech.com.br");
         user.setCreateDate(LocalDateTime.now());
         user.setLastModifiedDate(LocalDateTime.now());
