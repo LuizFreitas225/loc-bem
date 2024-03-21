@@ -1,11 +1,8 @@
 package br.com.luiz.locbem.dto;
 
 import br.com.luiz.locbem.constant.ErrorMessage;
-import br.com.luiz.locbem.model.Status;
 import lombok.Data;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
