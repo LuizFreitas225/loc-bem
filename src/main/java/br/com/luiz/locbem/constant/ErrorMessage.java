@@ -17,4 +17,9 @@ public final class ErrorMessage {
     public static final String SHORT_PASSWORD = "Password must be at least 6 characters long";
     public static final String DELETED_STATUS = "This action cannot be performed, this user has DELETED status.";
     public static final String INACTIVE_STATUS = "This action cannot be performed, this user has INACTIVE status.";
+    public static final String CPF_IN_USE = "CPF in use";
+    public static final String CNPJ_IN_USE = "CNPJ in use";
+    public static final String PERSON_REGISTRATION_IS_EMPTY = "Person registration is empty";
+    public static final String ACCESS_DENIED = "Access denied to perform this action.";
+
 }

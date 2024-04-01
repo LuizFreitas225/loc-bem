@@ -6,7 +6,8 @@ public enum Perfil {
 
     private String authority;
 
-    Perfil(String admin) {
+    Perfil(String authority) {
+        this.authority = authority;
     }
 
     public String getAuthority() {

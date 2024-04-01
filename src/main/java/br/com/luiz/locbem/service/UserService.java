@@ -1,10 +1,6 @@
 package br.com.luiz.locbem.service;
 
-import br.com.luiz.locbem.exception.EmailInUseException;
-import br.com.luiz.locbem.exception.ShortPasswordException;
-import br.com.luiz.locbem.exception.UserIsDeletedException;
-import br.com.luiz.locbem.exception.UserIsInactiveException;
-import br.com.luiz.locbem.exception.UserNotFoundException;
+import br.com.luiz.locbem.exception.*;
 import br.com.luiz.locbem.model.Status;
 import br.com.luiz.locbem.model.User;
 import br.com.luiz.locbem.repository.UserRepository;
@@ -21,8 +17,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
     private static final int MAX_PASSWORD_SIZE_ALLOWED = 6;
+
 
     public User create(final User user) {
         log.info("UserService.create - start - input  [{}]", user.getEmail());
@@ -97,7 +93,9 @@ public class UserService {
         if (emailInUse(user.getEmail())) {
             throw new EmailInUseException();
         }
+        validPersonRegistration(user);
     }
+
     public void validateEditUser(User currentUser, User newUser) {
         log.info("UserService.validateEditUser - start - input [{}]", currentUser.getEmail(), newUser.getEmail());
         if (validateDeletedUser(currentUser)) {
@@ -111,13 +109,31 @@ public class UserService {
         if (!currentUser.getEmail().equals(newUser.getEmail()) && emailInUse(newUser.getEmail())) {
             throw new EmailInUseException();
         }
+        validPersonRegistration(newUser);
+
     }
     public boolean validateDeletedUser(User user) {
         return (user.getStatus() == Status.DELETED);
     }
 
+    private void validPersonRegistration(User user) {
+        if(user.getIsNaturalPerson()) {
+            if( personRegistrationInUse(user.getPersonRegistration())){
+                throw new CPFInUseException();
+            }
+        }else{
+            if( personRegistrationInUse(user.getPersonRegistration())){
+                throw new CNPJInUseException();
+            }
+        }
+    }
+
     public boolean emailInUse(final String email) {
         return  userRepository.existsByEmail(email);
+    }
+
+    public boolean personRegistrationInUse(final String personRegistration) {
+        return  userRepository.existsByPersonRegistration(personRegistration);
     }
 
     public boolean passwordIsValid(final String password) {

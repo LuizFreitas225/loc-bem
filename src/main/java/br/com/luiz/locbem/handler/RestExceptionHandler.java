@@ -1,12 +1,7 @@
 package br.com.luiz.locbem.handler;
 
 import br.com.luiz.locbem.constant.ErrorMessage;
-import br.com.luiz.locbem.exception.EmailInUseException;
-import br.com.luiz.locbem.exception.ExceptionDetails;
-import br.com.luiz.locbem.exception.ShortPasswordException;
-import br.com.luiz.locbem.exception.UserIsDeletedException;
-import br.com.luiz.locbem.exception.UserIsInactiveException;
-import br.com.luiz.locbem.exception.UserNotFoundException;
+import br.com.luiz.locbem.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +40,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> invalidPasswordException(ShortPasswordException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.SHORT_PASSWORD, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(CNPJInUseException.class)
+    public ResponseEntity<Object> CNPJInUseException(CNPJInUseException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.CNPJ_IN_USE, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CPFInUseException.class)
+    public ResponseEntity<Object> CPFInUseException(CPFInUseException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.CPF_IN_USE, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<Object> PersonRegistrationIsEmptyException(ForbiddenException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.ACCESS_DENIED, HttpStatus.FORBIDDEN.value()), HttpStatus.FORBIDDEN);
+    }
+
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

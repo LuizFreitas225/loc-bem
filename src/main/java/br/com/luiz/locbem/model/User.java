@@ -39,7 +39,8 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    private String cpf;
+    private String personRegistration = null;
+    private Boolean isNaturalPerson = true;
     private String cep;
     private String coordinateY;
     private String coordinateX;

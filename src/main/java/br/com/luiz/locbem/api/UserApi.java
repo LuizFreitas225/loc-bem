@@ -3,6 +3,8 @@ package br.com.luiz.locbem.api;
 import br.com.luiz.locbem.dto.CreateUserDto;
 import br.com.luiz.locbem.dto.EditUserDto;
 import br.com.luiz.locbem.dto.UserProfileDto;
+import br.com.luiz.locbem.exception.ForbiddenException;
+import br.com.luiz.locbem.model.Perfil;
 import br.com.luiz.locbem.model.User;
 import br.com.luiz.locbem.service.UserService;
 import br.com.luiz.locbem.util.PaginationUtil;
@@ -12,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +42,18 @@ public class UserApi {
         log.info("UserController.create - start - input  [{}]", createUserDto.getEmail());
 
         User user = modelMapper.map(createUserDto, User.class);
-        User userCreated = userService.create(user);
+        if(user.getPerfil().equals(Perfil.ADMIN)){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if ( Boolean.FALSE.equals(authentication != null && authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ADMIN")))) {
+                 throw new ForbiddenException();
+            }
+        }
+            User userCreated = userService.create(user);
 
-        log.info("UserController.create - end - outPut  [{}]", userCreated.getId());
-        return new ResponseEntity<>(modelMapper.map(userCreated, UserProfileDto.class), HttpStatus.CREATED);
+            log.info("UserController.create - end - outPut  [{}]", userCreated.getId());
+            return new ResponseEntity<>(modelMapper.map(userCreated, UserProfileDto.class), HttpStatus.CREATED);
+
     }
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileDto> getUserProfileById(@PathVariable(value = "id") long id) {
