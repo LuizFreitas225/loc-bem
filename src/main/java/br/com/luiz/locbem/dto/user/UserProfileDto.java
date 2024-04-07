@@ -1,14 +1,9 @@
-package br.com.luiz.locbem.dto;
+package br.com.luiz.locbem.dto.user;
 
-import br.com.luiz.locbem.model.Perfil;
-import br.com.luiz.locbem.model.Status;
+import br.com.luiz.locbem.model.user.Perfil;
+import br.com.luiz.locbem.model.user.Status;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 

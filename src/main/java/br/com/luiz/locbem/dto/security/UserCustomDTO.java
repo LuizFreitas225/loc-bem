@@ -1,6 +1,6 @@
 package br.com.luiz.locbem.dto.security;
 
-import br.com.luiz.locbem.model.User;
+import br.com.luiz.locbem.model.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

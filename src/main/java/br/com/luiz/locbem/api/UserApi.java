@@ -1,11 +1,11 @@
 package br.com.luiz.locbem.api;
 
-import br.com.luiz.locbem.dto.CreateUserDto;
-import br.com.luiz.locbem.dto.EditUserDto;
-import br.com.luiz.locbem.dto.UserProfileDto;
+import br.com.luiz.locbem.dto.user.CreateUserDto;
+import br.com.luiz.locbem.dto.user.EditUserDto;
+import br.com.luiz.locbem.dto.user.UserProfileDto;
 import br.com.luiz.locbem.exception.ForbiddenException;
-import br.com.luiz.locbem.model.Perfil;
-import br.com.luiz.locbem.model.User;
+import br.com.luiz.locbem.model.user.Perfil;
+import br.com.luiz.locbem.model.user.User;
 import br.com.luiz.locbem.service.UserService;
 import br.com.luiz.locbem.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class UserApi {
         User user = modelMapper.map(createUserDto, User.class);
         if(user.getPerfil().equals(Perfil.ADMIN)){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if ( Boolean.FALSE.equals(authentication != null && authentication.getAuthorities().stream()
+            if ( authentication == null || Boolean.FALSE.equals(authentication.getAuthorities().stream()
                     .anyMatch(a -> a.getAuthority().equals("ADMIN")))) {
                  throw new ForbiddenException();
             }

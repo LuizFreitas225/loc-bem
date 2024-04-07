@@ -26,6 +26,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.INACTIVE_STATUS, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(OfertaNotFoundException.class)
+    public ResponseEntity<Object> OfertaNotFoundException(UserIsDeletedException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.OFERTA_NOT_FOUND, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> userNotFoundException(UserIsDeletedException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.USER_NOT_FOUND, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
@@ -40,18 +44,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> invalidPasswordException(ShortPasswordException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.SHORT_PASSWORD, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(CNPJInUseException.class)
-    public ResponseEntity<Object> CNPJInUseException(CNPJInUseException exception) {
-        return new ResponseEntity(new ExceptionDetails(ErrorMessage.CNPJ_IN_USE, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+
+    @ExceptionHandler(PersonRegistrationInUseException.class)
+    public ResponseEntity<Object> PersonRegistrationInUse(PersonRegistrationInUseException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.PERSON_REGISTRATION_IN_USE, HttpStatus.BAD_REQUEST.value()), HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(PersonRegistrationInvalidException.class)
+    public ResponseEntity<Object> PersonRegistrationInUse(PersonRegistrationInvalidException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.PERSON_REGISTRATION_INVALID, HttpStatus.BAD_REQUEST.value()), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(CPFInUseException.class)
-    public ResponseEntity<Object> CPFInUseException(CPFInUseException exception) {
-        return new ResponseEntity(new ExceptionDetails(ErrorMessage.CPF_IN_USE, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<Object> PersonRegistrationIsEmptyException(ForbiddenException exception) {
+    public ResponseEntity<Object> ForbiddenException(ForbiddenException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.ACCESS_DENIED, HttpStatus.FORBIDDEN.value()), HttpStatus.FORBIDDEN);
     }
 

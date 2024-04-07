@@ -1,6 +1,6 @@
 package br.com.luiz.locbem.repository;
 
-import br.com.luiz.locbem.model.User;
+import br.com.luiz.locbem.model.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

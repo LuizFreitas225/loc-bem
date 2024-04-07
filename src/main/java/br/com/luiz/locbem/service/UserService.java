@@ -1,8 +1,8 @@
 package br.com.luiz.locbem.service;
 
 import br.com.luiz.locbem.exception.*;
-import br.com.luiz.locbem.model.Status;
-import br.com.luiz.locbem.model.User;
+import br.com.luiz.locbem.model.user.Status;
+import br.com.luiz.locbem.model.user.User;
 import br.com.luiz.locbem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +23,7 @@ public class UserService {
     public User create(final User user) {
         log.info("UserService.create - start - input  [{}]", user.getEmail());
 
+        user.setPersonRegistration( removeSpecialCharacters(user.getPersonRegistration() ));
         validateCreateUser(user);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         User userCreated = userRepository.save(user);
@@ -51,6 +52,8 @@ public class UserService {
 
     public User update(final User user) {
         log.info("UserService.update - start - input  [{},{}]", user.getEmail(), user.getId());
+
+        user.setPersonRegistration( removeSpecialCharacters(user.getPersonRegistration() ));
 
         User currentUser = this.findValidUserByEmail(user.getEmail());
         user.setCreateDate(currentUser.getCreateDate());
@@ -82,7 +85,7 @@ public class UserService {
         return user;
     }
 
-    public void validateCreateUser(User user) {
+    private void validateCreateUser(User user) {
         log.info("UserService.validateUser - start - input [{}]", user.getEmail());
         if (validateDeletedUser(user)) {
             throw new UserIsDeletedException();
@@ -96,7 +99,7 @@ public class UserService {
         validPersonRegistration(user);
     }
 
-    public void validateEditUser(User currentUser, User newUser) {
+    private void validateEditUser(User currentUser, User newUser) {
         log.info("UserService.validateEditUser - start - input [{}]", currentUser.getEmail(), newUser.getEmail());
         if (validateDeletedUser(currentUser)) {
             throw new UserIsDeletedException();
@@ -112,31 +115,112 @@ public class UserService {
         validPersonRegistration(newUser);
 
     }
-    public boolean validateDeletedUser(User user) {
+    private boolean validateDeletedUser(User user) {
         return (user.getStatus() == Status.DELETED);
     }
 
     private void validPersonRegistration(User user) {
+        if( personRegistrationInUse(user.getPersonRegistration())){
+            throw new PersonRegistrationInUseException();
+        }
+
         if(user.getIsNaturalPerson()) {
-            if( personRegistrationInUse(user.getPersonRegistration())){
-                throw new CPFInUseException();
+            if(!validarCPF(user.getPersonRegistration())){
+                throw new PersonRegistrationInvalidException();
             }
         }else{
-            if( personRegistrationInUse(user.getPersonRegistration())){
-                throw new CNPJInUseException();
+            if(!validarCNPJ(user.getPersonRegistration())){
+                throw new PersonRegistrationInvalidException();
             }
         }
+
+
     }
 
-    public boolean emailInUse(final String email) {
+    private boolean emailInUse(final String email) {
         return  userRepository.existsByEmail(email);
     }
 
-    public boolean personRegistrationInUse(final String personRegistration) {
+    private boolean personRegistrationInUse(final String personRegistration) {
         return  userRepository.existsByPersonRegistration(personRegistration);
     }
 
-    public boolean passwordIsValid(final String password) {
+    private boolean passwordIsValid(final String password) {
         return  password.length() >= MAX_PASSWORD_SIZE_ALLOWED;
+    }
+
+
+    private static boolean validarCPF(String cpf) {
+        // Verifica se o CPF possui 11 dígitos
+        if (cpf.length() != 11)
+            return false;
+
+        // Verifica se todos os dígitos são iguais, o que tornaria o CPF inválido
+        if (cpf.matches("(\\d)\\1{10}"))
+            return false;
+
+        // Calcula o primeiro dígito verificador
+        int soma = 0;
+        for (int i = 0; i < 9; i++) {
+            soma += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
+        }
+        int resto = soma % 11;
+        int digitoVerificador1 = resto < 2 ? 0 : 11 - resto;
+
+        // Verifica se o primeiro dígito verificador está correto
+        if (digitoVerificador1 != Character.getNumericValue(cpf.charAt(9)))
+            return false;
+
+        // Calcula o segundo dígito verificador
+        soma = 0;
+        for (int i = 0; i < 10; i++) {
+            soma += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
+        }
+        resto = soma % 11;
+        int digitoVerificador2 = resto < 2 ? 0 : 11 - resto;
+
+        // Verifica se o segundo dígito verificador está correto
+        return digitoVerificador2 == Character.getNumericValue(cpf.charAt(10));
+    }
+
+    private static boolean validarCNPJ(String cnpj) {
+
+        // Verifica se o CNPJ possui 14 dígitos
+        if (cnpj.length() != 14)
+            return false;
+
+        // Calcula o primeiro dígito verificador
+        int soma = 0;
+        int peso = 2;
+        for (int i = 11; i >= 0; i--) {
+            soma += Character.getNumericValue(cnpj.charAt(i)) * peso;
+            peso++;
+            if (peso == 10)
+                peso = 2;
+        }
+        int resto = soma % 11;
+        int digitoVerificador1 = resto < 2 ? 0 : 11 - resto;
+
+        // Verifica se o primeiro dígito verificador está correto
+        if (digitoVerificador1 != Character.getNumericValue(cnpj.charAt(12)))
+            return false;
+
+        // Calcula o segundo dígito verificador
+        soma = 0;
+        peso = 2;
+        for (int i = 12; i >= 0; i--) {
+            soma += Character.getNumericValue(cnpj.charAt(i)) * peso;
+            peso++;
+            if (peso == 10)
+                peso = 2;
+        }
+        resto = soma % 11;
+        int digitoVerificador2 = resto < 2 ? 0 : 11 - resto;
+
+        // Verifica se o segundo dígito verificador está correto
+        return digitoVerificador2 == Character.getNumericValue(cnpj.charAt(13));
+    }
+    private String removeSpecialCharacters( String text) {
+        return text = text.replaceAll("[^0-9]", "");
     }
 }

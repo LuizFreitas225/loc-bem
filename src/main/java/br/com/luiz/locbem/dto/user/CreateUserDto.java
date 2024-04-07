@@ -1,20 +1,15 @@
-package br.com.luiz.locbem.dto;
+package br.com.luiz.locbem.dto.user;
 
 import br.com.luiz.locbem.constant.ErrorMessage;
-import br.com.luiz.locbem.model.Perfil;
+import br.com.luiz.locbem.model.user.Perfil;
 import lombok.Data;
-import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class EditUserDto {
-    @NotNull(message = ErrorMessage.ID_IS_MANDATORY)
-    private Long id;
+public class CreateUserDto { 
     @NotBlank(message = ErrorMessage.NAME_IS_MANDATORY)
     private String name;
     @NotBlank(message = ErrorMessage.EMAIL_IS_MANDATORY)

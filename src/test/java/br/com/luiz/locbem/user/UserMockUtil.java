@@ -1,7 +1,7 @@
 package br.com.luiz.locbem.user;
 
-import br.com.luiz.locbem.model.Status;
-import br.com.luiz.locbem.model.User;
+import br.com.luiz.locbem.model.user.Status;
+import br.com.luiz.locbem.model.user.User;
 
 import java.time.LocalDateTime;
 

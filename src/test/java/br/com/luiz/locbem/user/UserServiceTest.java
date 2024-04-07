@@ -4,8 +4,8 @@ import br.com.luiz.locbem.exception.EmailInUseException;
 import br.com.luiz.locbem.exception.ShortPasswordException;
 import br.com.luiz.locbem.exception.UserIsDeletedException;
 import br.com.luiz.locbem.exception.UserIsInactiveException;
-import br.com.luiz.locbem.model.Status;
-import br.com.luiz.locbem.model.User;
+import br.com.luiz.locbem.model.user.Status;
+import br.com.luiz.locbem.model.user.User;
 import br.com.luiz.locbem.repository.UserRepository;
 import br.com.luiz.locbem.service.UserService;
 import br.com.luiz.locbem.util.PaginationUtil;
@@ -24,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 public class UserServiceTest {
