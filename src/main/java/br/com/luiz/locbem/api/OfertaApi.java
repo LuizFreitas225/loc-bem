@@ -1,8 +1,11 @@
 package br.com.luiz.locbem.api;
 
+import br.com.luiz.locbem.dto.oferta.CreateOfertaDTO;
+import br.com.luiz.locbem.dto.oferta.UpdateOfertaDTO;
 import br.com.luiz.locbem.model.offer.Oferta;
 import br.com.luiz.locbem.service.OfertaService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -14,16 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/oferta")
 public class OfertaApi {
     private final OfertaService ofertaService;
+    private final ModelMapper modelMapper;
     @PostMapping
-    public ResponseEntity<Oferta> criarOferta(@RequestBody Oferta oferta) {
-        Oferta novaOferta = ofertaService.criarOferta(oferta);
+    public ResponseEntity<Oferta> criarOferta(@RequestBody CreateOfertaDTO dto) {
+        Oferta novaOferta = ofertaService.criarOferta(modelMapper.map(dto, Oferta.class));
         return new ResponseEntity<>(novaOferta, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Oferta> atualizarOferta(@PathVariable Long id, @RequestBody Oferta oferta) {
-        oferta.setId(id); // Garantindo que o ID passado seja usado para atualização
-        Oferta ofertaAtualizada = ofertaService.atualizarOferta(oferta);
+    @PutMapping()
+    public ResponseEntity<Oferta> atualizarOferta( @RequestBody UpdateOfertaDTO dto) {
+        Oferta ofertaAtualizada = ofertaService.atualizarOferta(modelMapper.map(dto, Oferta.class));
         return new ResponseEntity<>(ofertaAtualizada, HttpStatus.OK);
     }
 

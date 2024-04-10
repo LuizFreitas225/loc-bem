@@ -10,7 +10,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class CreateOfertaDTO {
+public class UpdateOfertaDTO {
+    @NotNull(message = "O id não pode ser nulo")
+    private Long id;
     @NotBlank(message = "O modelo não pode estar em branco")
     private String modelo;
 
