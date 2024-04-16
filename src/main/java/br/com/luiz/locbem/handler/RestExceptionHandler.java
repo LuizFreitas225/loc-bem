@@ -27,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(OfertaNotFoundException.class)
-    public ResponseEntity<Object> OfertaNotFoundException(UserIsDeletedException exception) {
+    public ResponseEntity<Object> OfertaNotFoundException(OfertaNotFoundException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.OFERTA_NOT_FOUND, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(UserNotFoundException.class)

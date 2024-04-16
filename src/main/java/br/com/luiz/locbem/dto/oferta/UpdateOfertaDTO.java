@@ -4,12 +4,13 @@ import br.com.luiz.locbem.model.offer.CaracteristicaVeiculo;
 import br.com.luiz.locbem.model.offer.Combustivel;
 import br.com.luiz.locbem.model.offer.EstadoVeiculo;
 import br.com.luiz.locbem.model.offer.TipoVeiculo;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-
+@Data
 public class UpdateOfertaDTO {
     @NotNull(message = "O id não pode ser nulo")
     private Long id;

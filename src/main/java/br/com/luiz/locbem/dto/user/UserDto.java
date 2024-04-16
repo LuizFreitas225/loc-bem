@@ -8,17 +8,10 @@ import java.time.LocalDateTime;
 
 
 @Data
-public class UserProfileDto {
-    private Long id;
-    private LocalDateTime createDate;
-    private LocalDateTime lastModifiedDate;
+public class UserDto {
     private String name;
     private String email;
-    private String personRegistration;
-    private Boolean isNaturalPerson;
     private String cep;
     private String coordinateY;
     private String coordinateX;
-    private Status status = Status.ACTIVE;
-    private Perfil perfil = Perfil.USER;
 }

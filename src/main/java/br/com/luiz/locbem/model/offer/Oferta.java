@@ -1,5 +1,6 @@
 package br.com.luiz.locbem.model.offer;
 
+import br.com.luiz.locbem.model.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,6 +20,10 @@ public class Oferta {
     private double quilometragem;
     private String condicao;
     private String coordenadas;
+
+    @ManyToOne
+    User user;
+
     @ElementCollection
     private List<String> imagens;
 

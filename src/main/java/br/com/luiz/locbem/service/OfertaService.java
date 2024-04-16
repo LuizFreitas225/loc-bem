@@ -1,27 +1,38 @@
 package br.com.luiz.locbem.service;
 
+import br.com.luiz.locbem.exception.ForbiddenException;
 import br.com.luiz.locbem.exception.OfertaNotFoundException;
 import br.com.luiz.locbem.model.offer.Oferta;
+import br.com.luiz.locbem.model.user.User;
 import br.com.luiz.locbem.repository.OfertaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class OfertaService {
     private final OfertaRepository ofertaRepository;
+    private final UserService userService;
 
+    @Transactional
     public Oferta criarOferta(Oferta oferta) {
+        User user = validCurrentUser();
+        oferta.setUser(user);
         return ofertaRepository.save(oferta);
     }
 
-    public Oferta atualizarOferta(Oferta oferta) {
-        if (!ofertaRepository.existsById(oferta.getId())) {
-            throw new OfertaNotFoundException();
+    @Transactional
+    public Oferta atualizarOferta(Oferta novaOferta) {
+        Oferta ofertaAtual = ofertaRepository.findById(novaOferta.getId()).orElseThrow(OfertaNotFoundException::new);
+
+        if( ofertaAtual.getUser().equals(validCurrentUser())){
+            novaOferta.setUser(ofertaAtual.getUser());
+            return ofertaRepository.save(novaOferta);
         }
-        return ofertaRepository.save(oferta);
+        throw new ForbiddenException();
     }
 
     public Page<Oferta> listarOfertas(PageRequest pageRequest, String searchTerm) {
@@ -34,9 +45,19 @@ public class OfertaService {
     }
 
     public void deletarOferta(Long id) {
-        if (!ofertaRepository.existsById(id)) {
-            throw new OfertaNotFoundException();
-        }
-        ofertaRepository.deleteById(id);
+        Oferta oferta = ofertaRepository.findById(id).orElseThrow(OfertaNotFoundException::new);
+        if( oferta.getUser().equals(validCurrentUser())){
+             ofertaRepository.deleteById(id);
+        }   else throw new ForbiddenException();
     }
+
+    private  User validCurrentUser(){
+        try{
+            return userService.getUserAuthenticated();
+        }
+        catch (Exception e){
+            throw new ForbiddenException();
+        }
+    }
+
 }

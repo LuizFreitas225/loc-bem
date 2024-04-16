@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class UserService {
     }
     public User findValidUserByEmail(String email) {
         log.info("UserService.findByEmail - start - input [{}]", email);
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         if (user.getStatus() == Status.DELETED) {
            throw new UserIsDeletedException();
@@ -83,6 +84,10 @@ public class UserService {
             throw new UserIsInactiveException();
         }
         return user;
+    }
+
+    public User getUserAuthenticated(){
+        return findValidUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     private void validateCreateUser(User user) {
