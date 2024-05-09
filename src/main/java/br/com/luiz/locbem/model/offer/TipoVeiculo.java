@@ -1,18 +1,46 @@
 package br.com.luiz.locbem.model.offer;
 
 public enum TipoVeiculo {
-    AUTOMOVEL_DE_PASSAGEIROS,
+    // Automóveis de Passeio
+    SEDAN,
+    HATCH,
+    COUPE,
+    CONVERTIVEL,
+
+    // Veículos Utilitários
     SUV,
-    CAMINHAO,
-    VAN_MINIVAN,
+    CROSSOVER,
+    MINIVAN,
+    PICKUP,
+
+    // Veículos Comerciais
+    CAMINHAO_LEVE,
+    CAMINHAO_PESADO,
+    VAN,
+
+    // Veículos de Duas Rodas
     MOTOCICLETA,
-    BICICLETA_MOTORIZADA,
+    SCOOTER,
+    BICICLETA,
+
+    // Veículos Elétricos e Híbridos
     VEICULO_ELETRICO,
-    ONIBUS,
-    CAMINHAO_DE_ENTREGA,
-    VEICULO_DE_RECREACAO,
-    VEICULO_TODO_TERRENO,
+    VEICULO_HIBRIDO,
+
+    // Veículos Especiais
+    VEICULO_MILITAR,
+    VEICULO_DE_EMERGENCIA,
+    VEICULO_INDUSTRIAL,
+
+    // Veículos de Recreação
+    MOTORHOME,
+    TRAILER,
     VEICULO_AQUATICO,
+    VEICULO_OFF_ROAD,
+
+    // Outros
+    TRATOR,
     AERONAVE_LEVE,
-    VEICULO_FERROVIARIO
+    AERONAVE
 }
+

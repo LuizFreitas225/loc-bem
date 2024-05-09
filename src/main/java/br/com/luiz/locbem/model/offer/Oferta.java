@@ -18,7 +18,6 @@ public class Oferta {
     private double preco;
     private String descricao;
     private double quilometragem;
-    private String condicao;
     private String coordenadas;
 
     @ManyToOne

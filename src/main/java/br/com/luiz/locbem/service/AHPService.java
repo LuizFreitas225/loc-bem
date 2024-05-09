@@ -5,13 +5,17 @@ import br.com.luiz.locbem.model.user.PreferenciaUsuario;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class AHPService {
 
 
-    public double calcularPontuacao(PreferenciaUsuario preferencias, Oferta oferta) {
+    public double calcularPontuacao(PreferenciaUsuario preferencias, List<Oferta> ofertas) {
+        if( ofertas == null || ofertas.isEmpty() ){
+            throw  new IllegalArgumentException("A Lista de Ofertas não pode ser vazia");
+        }
         // Definir pesos normalizados
         Map<String, Double> pesosNormalizados = normalizarPesos(preferencias);
 
@@ -19,7 +23,6 @@ public class AHPService {
         double pontuacao =
                 (oferta.getPreco() * pesosNormalizados.get("preco")) +
                         (oferta.getQuilometragem() * pesosNormalizados.get("quilometragem")) +
-                        (pesosNormalizados.get("condicao") * calcularPontuacaoCondicao()) +
                         (pesosNormalizados.get("tipoVeiculo") * calcularPontuacaoTipoVeiculo()) +
                         (pesosNormalizados.get("combustivel") * calcularPontuacaoCombustivel()) +
                         (pesosNormalizados.get("estadoVeiculo") * calcularPontuacaoEstadoVeiculo());
@@ -30,12 +33,11 @@ public class AHPService {
     private Map<String, Double> normalizarPesos(PreferenciaUsuario preferencias) {
         Map<String, Double> pesosNormalizados = new HashMap<>();
         int somaPesos = preferencias.getPesoPreco() + preferencias.getPesoQuilometragem() +
-                preferencias.getPesoCondicao() + preferencias.getPesoTipoVeiculo() +
+              + preferencias.getPesoTipoVeiculo() +
                 preferencias.getPesoCombustivel() + preferencias.getPesoEstadoVeiculo();
 
         pesosNormalizados.put("preco", (double) preferencias.getPesoPreco() / somaPesos);
         pesosNormalizados.put("quilometragem", (double) preferencias.getPesoQuilometragem() / somaPesos);
-        pesosNormalizados.put("condicao", (double) preferencias.getPesoCondicao() / somaPesos);
         pesosNormalizados.put("tipoVeiculo", (double) preferencias.getPesoTipoVeiculo() / somaPesos);
         pesosNormalizados.put("combustivel", (double) preferencias.getPesoCombustivel() / somaPesos);
         pesosNormalizados.put("estadoVeiculo", (double) preferencias.getPesoEstadoVeiculo() / somaPesos);
