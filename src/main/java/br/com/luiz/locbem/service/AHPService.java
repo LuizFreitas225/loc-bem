@@ -1,36 +1,52 @@
 package br.com.luiz.locbem.service;
 
-import br.com.luiz.locbem.model.offer.Oferta;
+import br.com.luiz.locbem.dto.oferta.OfertaDTO;
+import br.com.luiz.locbem.model.offer.*;
 import br.com.luiz.locbem.model.user.PreferenciaUsuario;
+import br.com.luiz.locbem.service.criterio.CriterioService;
+import br.com.luiz.locbem.util.ModelMapperUtil;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class AHPService {
+    private final ModelMapper modelMapper;
 
 
-    public double calcularPontuacao(PreferenciaUsuario preferencias, List<Oferta> ofertas) {
-        if( ofertas == null || ofertas.isEmpty() ){
-            throw  new IllegalArgumentException("A Lista de Ofertas não pode ser vazia");
-        }
+    public List<OfertaComPontuacao> calcularPontuacao(PreferenciaUsuario preferencias, List<Oferta> ofertas) {
+
         // Definir pesos normalizados
-        Map<String, Double> pesosNormalizados = normalizarPesos(preferencias);
+        List<OfertaComPontuacao> ofertasComPontuacaoList = ModelMapperUtil.toOfertaComPontuacao(ofertas, modelMapper);
+        CriterioService.normalizarTodosCriterios(preferencias, ofertasComPontuacaoList);
+        Map<String, Double> pesos = getPesos(preferencias);
 
-        // Calcular pontuação usando pesos normalizados
-        double pontuacao =
-                (oferta.getPreco() * pesosNormalizados.get("preco")) +
-                        (oferta.getQuilometragem() * pesosNormalizados.get("quilometragem")) +
-                        (pesosNormalizados.get("tipoVeiculo") * calcularPontuacaoTipoVeiculo()) +
-                        (pesosNormalizados.get("combustivel") * calcularPontuacaoCombustivel()) +
-                        (pesosNormalizados.get("estadoVeiculo") * calcularPontuacaoEstadoVeiculo());
+        for (int i = 0; i < ofertasComPontuacaoList.size(); i++) {
+            OfertaComPontuacao oferta = ofertasComPontuacaoList.get(i);
+            OfertaNormalizada ofertaNormalizada =  ofertasComPontuacaoList.get(i).getOfertaNormalizada();
 
-        return pontuacao;
+            double pontuacao =
+                    (ofertaNormalizada.getPreco() * pesos.get("preco")) +
+                            (ofertaNormalizada.getQuilometragem() * pesos.get("quilometragem")) +
+                            (ofertaNormalizada.getTipoVeiculo() * pesos.get("tipoVeiculo")) +
+                            (ofertaNormalizada.getCombustivel() * pesos.get("combustivel")) +
+                            (ofertaNormalizada.getTipoVeiculo() * pesos.get("estadoVeiculo")) +
+                            (ofertaNormalizada.getCaracteristicas() * pesos.get("caracteristicas"));
+
+            ofertasComPontuacaoList.get(i).setPontuacao(pontuacao);
+        }
+
+        return ofertasComPontuacaoList;
     }
 
-    private Map<String, Double> normalizarPesos(PreferenciaUsuario preferencias) {
+
+
+    private Map<String, Double> getPesos(PreferenciaUsuario preferencias) {
         Map<String, Double> pesosNormalizados = new HashMap<>();
         int somaPesos = preferencias.getPesoPreco() + preferencias.getPesoQuilometragem() +
               + preferencias.getPesoTipoVeiculo() +
@@ -41,6 +57,7 @@ public class AHPService {
         pesosNormalizados.put("tipoVeiculo", (double) preferencias.getPesoTipoVeiculo() / somaPesos);
         pesosNormalizados.put("combustivel", (double) preferencias.getPesoCombustivel() / somaPesos);
         pesosNormalizados.put("estadoVeiculo", (double) preferencias.getPesoEstadoVeiculo() / somaPesos);
+        pesosNormalizados.put("caracteristicas", (double) preferencias.getPesoEstadoVeiculo() / somaPesos);
 
         return pesosNormalizados;
     }
