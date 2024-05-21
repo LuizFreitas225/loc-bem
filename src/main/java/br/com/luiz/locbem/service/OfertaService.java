@@ -3,19 +3,26 @@ package br.com.luiz.locbem.service;
 import br.com.luiz.locbem.exception.ForbiddenException;
 import br.com.luiz.locbem.exception.OfertaNotFoundException;
 import br.com.luiz.locbem.model.offer.Oferta;
+import br.com.luiz.locbem.model.offer.OfertaComPontuacao;
+import br.com.luiz.locbem.model.user.PreferenciaUsuario;
 import br.com.luiz.locbem.model.user.User;
 import br.com.luiz.locbem.repository.OfertaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OfertaService {
     private final OfertaRepository ofertaRepository;
     private final UserService userService;
+    private final AHPService ahpService;
 
     @Transactional
     public Oferta criarOferta(Oferta oferta) {
@@ -35,8 +42,17 @@ public class OfertaService {
         throw new ForbiddenException();
     }
 
-    public Page<Oferta> listarOfertas(PageRequest pageRequest, String searchTerm) {
-        return ofertaRepository.findAByModeloAndDescricao(pageRequest,searchTerm);
+    public Page<OfertaComPontuacao> listarOfertas(PageRequest pageRequest, String searchTerm, PreferenciaUsuario preferenciaUsuario) {
+
+        Page<Oferta> ofertas = ofertaRepository.findAByModeloAndDescricao(pageRequest, searchTerm);
+
+        List<OfertaComPontuacao> ofertasComPontuacaoList = ahpService.calcularPontuacao(preferenciaUsuario, ofertas.getContent());
+
+        ofertasComPontuacaoList.sort(Comparator.comparing(OfertaComPontuacao::getPontuacao).reversed());
+
+        Page<OfertaComPontuacao> ofertasComPontuacao = new PageImpl<>(ofertasComPontuacaoList, pageRequest, ofertas.getTotalElements());
+
+        return ofertasComPontuacao;
     }
 
     public Oferta buscarOfertaPorId(Long id) {

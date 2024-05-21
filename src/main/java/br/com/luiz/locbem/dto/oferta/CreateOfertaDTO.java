@@ -49,6 +49,6 @@ public class CreateOfertaDTO {
     private EstadoVeiculo estadoVeiculo;
 
     @NotEmpty(message = "A lista de características não pode estar vazia")
-    private List<CaracteristicaVeiculo> caracteristicas;
+    private List<CaracteristicaVeiculo> caracteristica;
 
 }

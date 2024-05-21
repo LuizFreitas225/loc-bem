@@ -1,9 +1,7 @@
 package br.com.luiz.locbem.model.offer;
 
-import br.com.luiz.locbem.model.user.User;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.List;
 
 
@@ -18,12 +16,12 @@ public class OfertaComPontuacao {
     private String descricao;
     private double quilometragem;
     private String coordenadas;
-    private User user;
+    private int userId;
     private List<String> imagens;
     private TipoVeiculo tipoVeiculo;
     private Combustivel combustivel;
     private EstadoVeiculo estadoVeiculo;
-    private List<CaracteristicaVeiculo> caracteristicas;
+    private List<CaracteristicaVeiculo> caracteristica;
 
     private double pontuacao;
     private OfertaNormalizada  ofertaNormalizada = new OfertaNormalizada();

@@ -14,7 +14,7 @@ public class ModelMapperUtil {
         List<OfertaComPontuacao> ofertaComPontuacaoList = new ArrayList<>();
 
         ofertas.forEach(oferta -> {
-            ofertaComPontuacaoList.add(modelMapper.map(ofertas, OfertaComPontuacao.class));
+            ofertaComPontuacaoList.add(modelMapper.map(oferta, OfertaComPontuacao.class));
         });
         return  ofertaComPontuacaoList;
     }

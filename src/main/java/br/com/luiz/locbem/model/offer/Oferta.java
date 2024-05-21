@@ -37,6 +37,6 @@ public class Oferta {
 
     @ElementCollection(targetClass = CaracteristicaVeiculo.class)
     @Enumerated(EnumType.STRING)
-    private List<CaracteristicaVeiculo> caracteristicas;
+    private List<CaracteristicaVeiculo> caracteristica;
 
 }

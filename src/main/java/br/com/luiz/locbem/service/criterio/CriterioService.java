@@ -19,11 +19,25 @@ public class CriterioService {
 
 
     private static void normalizarPreco(List<OfertaComPontuacao> ofertas) {
-        double maiorPreco = encontrarMaiorPreco(ofertas);
-        if (maiorPreco > 0) {
+        double menorPreco = 0;
+        double maiorpreco = 0;
+
+        // Encontrar a menor e a maior quilometragem
+        for (OfertaComPontuacao oferta : ofertas) {
+            if (oferta.getPreco() < menorPreco) {
+                menorPreco = oferta.getPreco();
+            }
+            if (oferta.getPreco() > maiorpreco) {
+                maiorpreco = oferta.getPreco();
+            }
+        }
+
+        // Normalizar Preco
+        double range = maiorpreco - menorPreco;
+        if (range >= 0) {
             for (OfertaComPontuacao oferta : ofertas) {
-                double precoNormalizado = (oferta.getPreco() / maiorPreco) * 10;
-                oferta.getOfertaNormalizada().setPreco(precoNormalizado);
+                double scoreNormalizado = 10 * (maiorpreco - oferta.getQuilometragem()) / range;
+                oferta.getOfertaNormalizada().setPreco(scoreNormalizado);
             }
         }
     }
@@ -89,7 +103,7 @@ public class CriterioService {
 
         for( OfertaComPontuacao oferta : ofertas){
             caracteristicasAtendidas = 0;
-            for (CaracteristicaVeiculo caracteristica : oferta.getCaracteristicas()) {
+            for (CaracteristicaVeiculo caracteristica : oferta.getCaracteristica()) {
                 if (preferenciaUsuario.getCaracteristicas().contains(caracteristica)) {
                     caracteristicasAtendidas++;
                 }

@@ -4,6 +4,8 @@ import br.com.luiz.locbem.dto.oferta.CreateOfertaDTO;
 import br.com.luiz.locbem.dto.oferta.OfertaDTO;
 import br.com.luiz.locbem.dto.oferta.UpdateOfertaDTO;
 import br.com.luiz.locbem.model.offer.Oferta;
+import br.com.luiz.locbem.model.offer.OfertaComPontuacao;
+import br.com.luiz.locbem.model.user.PreferenciaUsuario;
 import br.com.luiz.locbem.service.OfertaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,12 +37,13 @@ public class OfertaApi {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Oferta>> listarOfertas(
+    public ResponseEntity<Page<OfertaComPontuacao>> listarOfertas(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String searchTerm) {
+            @RequestParam(defaultValue = "50") int size,
+            @RequestParam(required = false, defaultValue = "") String searchTerm,
+            @RequestBody(required = false) PreferenciaUsuario preferenciaUsuario) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Oferta> ofertas = ofertaService.listarOfertas(pageRequest, searchTerm);
+        Page<OfertaComPontuacao> ofertas = ofertaService.listarOfertas(pageRequest, searchTerm, preferenciaUsuario);
         return new ResponseEntity<>(ofertas, HttpStatus.OK);
     }
 

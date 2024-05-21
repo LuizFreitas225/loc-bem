@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +23,18 @@ public class AHPService {
     public List<OfertaComPontuacao> calcularPontuacao(PreferenciaUsuario preferencias, List<Oferta> ofertas) {
 
         // Definir pesos normalizados
-        List<OfertaComPontuacao> ofertasComPontuacaoList = ModelMapperUtil.toOfertaComPontuacao(ofertas, modelMapper);
-        CriterioService.normalizarTodosCriterios(preferencias, ofertasComPontuacaoList);
+
+          List<OfertaComPontuacao> ofertaComPontuacaoList = ModelMapperUtil.toOfertaComPontuacao(ofertas, modelMapper);
+
+        if( preferencias == null ){
+            return ofertaComPontuacaoList;
+        }
+        CriterioService.normalizarTodosCriterios(preferencias, ofertaComPontuacaoList);
         Map<String, Double> pesos = getPesos(preferencias);
 
-        for (int i = 0; i < ofertasComPontuacaoList.size(); i++) {
-            OfertaComPontuacao oferta = ofertasComPontuacaoList.get(i);
-            OfertaNormalizada ofertaNormalizada =  ofertasComPontuacaoList.get(i).getOfertaNormalizada();
+        for (int i = 0; i < ofertaComPontuacaoList.size(); i++) {
+            OfertaComPontuacao oferta = ofertaComPontuacaoList.get(i);
+            OfertaNormalizada ofertaNormalizada =  ofertaComPontuacaoList.get(i).getOfertaNormalizada();
 
             double pontuacao =
                     (ofertaNormalizada.getPreco() * pesos.get("preco")) +
@@ -38,48 +44,25 @@ public class AHPService {
                             (ofertaNormalizada.getTipoVeiculo() * pesos.get("estadoVeiculo")) +
                             (ofertaNormalizada.getCaracteristicas() * pesos.get("caracteristicas"));
 
-            ofertasComPontuacaoList.get(i).setPontuacao(pontuacao);
+            ofertaComPontuacaoList.get(i).setPontuacao(pontuacao);
         }
 
-        return ofertasComPontuacaoList;
+        return ofertaComPontuacaoList;
     }
-
-
 
     private Map<String, Double> getPesos(PreferenciaUsuario preferencias) {
         Map<String, Double> pesosNormalizados = new HashMap<>();
         int somaPesos = preferencias.getPesoPreco() + preferencias.getPesoQuilometragem() +
               + preferencias.getPesoTipoVeiculo() +
-                preferencias.getPesoCombustivel() + preferencias.getPesoEstadoVeiculo();
+                preferencias.getPesoCombustivel() + preferencias.getPesoEstadoVeiculo() + preferencias.getPesoCaracteristicas();
 
         pesosNormalizados.put("preco", (double) preferencias.getPesoPreco() / somaPesos);
         pesosNormalizados.put("quilometragem", (double) preferencias.getPesoQuilometragem() / somaPesos);
         pesosNormalizados.put("tipoVeiculo", (double) preferencias.getPesoTipoVeiculo() / somaPesos);
         pesosNormalizados.put("combustivel", (double) preferencias.getPesoCombustivel() / somaPesos);
         pesosNormalizados.put("estadoVeiculo", (double) preferencias.getPesoEstadoVeiculo() / somaPesos);
-        pesosNormalizados.put("caracteristicas", (double) preferencias.getPesoEstadoVeiculo() / somaPesos);
+        pesosNormalizados.put("caracteristicas", (double) preferencias.getPesoCaracteristicas() / somaPesos);
 
         return pesosNormalizados;
     }
-
-    private double calcularPontuacaoCondicao() {
-        // Lógica para calcular a pontuação da condição do veículo
-        return 0.0; // Substitua 0.0 pelo valor calculado
-    }
-
-    private double calcularPontuacaoTipoVeiculo() {
-        // Lógica para calcular a pontuação do tipo de veículo
-        return 0.0; // Substitua 0.0 pelo valor calculado
-    }
-
-    private double calcularPontuacaoCombustivel() {
-        // Lógica para calcular a pontuação do combustível
-        return 0.0; // Substitua 0.0 pelo valor calculado
-    }
-
-    private double calcularPontuacaoEstadoVeiculo() {
-        // Lógica para calcular a pontuação do estado do veículo
-        return 0.0; // Substitua 0.0 pelo valor calculado
-    }
-
 }
