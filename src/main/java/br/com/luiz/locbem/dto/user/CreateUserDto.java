@@ -23,9 +23,9 @@ public class CreateUserDto {
     @NotBlank(message = ErrorMessage.CEP_IS_MANDATORY)
     @Pattern(regexp = "\\d{5}-\\d{3}", message = ErrorMessage.CEP_IS_INVALID)
     private String cep;
-    @NotBlank(message = ErrorMessage.COORDINATE_IS_MANDATORY)
-    private String coordinateY;
-    @NotBlank(message = ErrorMessage.COORDINATE_IS_MANDATORY)
-    private String coordinateX;
+    @NotBlank(message = ErrorMessage.LONGITUDE_IS_MANDATORY)
+    private String longitude;
+    @NotBlank(message = ErrorMessage.LATITUDE_IS_MANDATORY)
+    private String latitude;
     private Perfil perfil = Perfil.USER;
 }

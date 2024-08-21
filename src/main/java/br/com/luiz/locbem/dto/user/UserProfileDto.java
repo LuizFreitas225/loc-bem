@@ -17,8 +17,8 @@ public class UserProfileDto {
     private String personRegistration;
     private Boolean isNaturalPerson;
     private String cep;
-    private String coordinateY;
-    private String coordinateX;
+    private String longitude;
+    private String latitude;
     private Status status = Status.ACTIVE;
     private Perfil perfil = Perfil.USER;
 }

@@ -42,8 +42,8 @@ public class User {
     private String personRegistration = null;
     private Boolean isNaturalPerson = true;
     private String cep;
-    private String coordinateY;
-    private String coordinateX;
+    private String longitude;
+    private String latitude;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;

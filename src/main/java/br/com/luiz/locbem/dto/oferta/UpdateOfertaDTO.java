@@ -35,8 +35,11 @@ public class UpdateOfertaDTO {
     @NotBlank(message = "A condição não pode estar em branco")
     private String condicao;
 
-    @NotBlank(message = "As coordenadas não podem estar em branco")
-    private String coordenadas;
+    @NotNull(message = "A latitude não pode ser nula")
+    private Double latitude;
+
+    @NotNull(message = "A longitude não pode ser nula")
+    private Double longitude;
 
     @NotEmpty(message = "A lista de imagens não pode estar vazia")
     private List<String> imagens;

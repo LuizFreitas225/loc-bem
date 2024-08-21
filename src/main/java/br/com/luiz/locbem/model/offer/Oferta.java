@@ -18,7 +18,8 @@ public class Oferta {
     private double preco;
     private String descricao;
     private double quilometragem;
-    private String coordenadas;
+    private double latitude;
+    private double longitude;
 
     @ManyToOne
     User user;

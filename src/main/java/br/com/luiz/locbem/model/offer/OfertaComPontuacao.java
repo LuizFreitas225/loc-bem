@@ -15,7 +15,8 @@ public class OfertaComPontuacao {
     private double preco;
     private String descricao;
     private double quilometragem;
-    private String coordenadas;
+    private Double latitude;
+    private Double longitude;
     private int userId;
     private List<String> imagens;
     private TipoVeiculo tipoVeiculo;

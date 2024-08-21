@@ -22,7 +22,8 @@ public class OfertaDTO {
     private String descricao;
     private double quilometragem;
     private String condicao;
-    private String coordenadas;
+    private Double latitude;
+    private Double longitude;
     private UserDto user;
     private List<String> imagens;
     private TipoVeiculo tipoVeiculo;
