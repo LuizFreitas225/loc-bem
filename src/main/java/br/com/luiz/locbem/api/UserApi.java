@@ -60,6 +60,12 @@ public class UserApi {
         log.info("UserController.getUserProfileById - start - input  [{}]", id);
         return new ResponseEntity<>(modelMapper.map(userService.findAndValidateById(id), UserProfileDto.class), HttpStatus.OK);
     }
+    @GetMapping("/atual")
+    public ResponseEntity<UserProfileDto> getCurrentUser() {
+        log.info("UserController.getCurrentUser - start" );
+        return new ResponseEntity<>(modelMapper.map(userService.getUserAuthenticated(), UserProfileDto.class), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable(value = "id") long id) {
         log.info("UserController.getUserProfileById - start - input  [{}]", id);
@@ -86,9 +92,7 @@ public class UserApi {
         @RequestParam(value = "orderBy", required = false) final String orderBy,
         @RequestParam(value = "searchTerm", required = false, defaultValue = "") final String searchTerm
     ) {
-
         log.info("UserController.search - start - input  [{},{},{},{}]", page, size, sort, searchTerm);
-
         return userService.findAByNameOrEmailOrUserName(PaginationUtil.configuringPageable(page, size, sort, orderBy), searchTerm);
     }
 

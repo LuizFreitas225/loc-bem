@@ -75,7 +75,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new ExceptionDetails("Alguma informação não foi informada como esperado",
+        return new ResponseEntity<>(new ExceptionDetails("Alguma informação não foi informada como esperado, verifique os dados enviados e tente novamente.",
                 status.value()), status);
     }
 

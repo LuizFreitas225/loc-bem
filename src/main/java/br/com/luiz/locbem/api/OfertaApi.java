@@ -40,7 +40,7 @@ public class OfertaApi {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size,
             @RequestParam(required = false, defaultValue = "") String searchTerm,
-            @RequestBody(required = false) PreferenciaUsuario preferenciaUsuario) {
+            @RequestBody() @Valid PreferenciaUsuario preferenciaUsuario) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<OfertaComPontuacao> ofertas = ofertaService.listarOfertas(pageRequest, searchTerm, preferenciaUsuario);
         return new ResponseEntity<>(ofertas, HttpStatus.OK);

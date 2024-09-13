@@ -1,5 +1,6 @@
 package br.com.luiz.locbem.service;
 
+import br.com.luiz.locbem.dto.georeferencing.CoordinatesDTO;
 import br.com.luiz.locbem.exception.ForbiddenException;
 import br.com.luiz.locbem.exception.OfertaNotFoundException;
 import br.com.luiz.locbem.model.offer.Oferta;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,13 +44,17 @@ public class OfertaService {
         throw new ForbiddenException();
     }
 
-    public Page<OfertaComPontuacao> listarOfertas(PageRequest pageRequest, String searchTerm, PreferenciaUsuario preferenciaUsuario) {
+    public Page<OfertaComPontuacao> listarOfertas(PageRequest pageRequest, String searchTerm,
+                                                  PreferenciaUsuario preferenciaUsuario) {
 
-        Page<Oferta> ofertas = ofertaRepository.findAByModeloAndDescricao(pageRequest, searchTerm);
+        Page<Oferta> ofertas = this.findAByModeloAndDescricaoAndFilterForDistance(pageRequest,
+                searchTerm, preferenciaUsuario.getDistanciaMaxima(), preferenciaUsuario.getCoordenadasUsuario());
 
         List<OfertaComPontuacao> ofertasComPontuacaoList = ahpService.calcularPontuacao(preferenciaUsuario, ofertas.getContent());
 
         ofertasComPontuacaoList.sort(Comparator.comparing(OfertaComPontuacao::getPontuacao).reversed());
+
+
 
         Page<OfertaComPontuacao> ofertasComPontuacao = new PageImpl<>(ofertasComPontuacaoList, pageRequest, ofertas.getTotalElements());
 
@@ -74,6 +80,29 @@ public class OfertaService {
         catch (Exception e){
             throw new ForbiddenException();
         }
+    }
+
+    private Page<Oferta> findAByModeloAndDescricaoAndFilterForDistance(PageRequest pageRequest, String searchTerm, int maxDistance,
+                                                                      CoordinatesDTO userCoordinates) {
+
+        Page<Oferta> ofertas = ofertaRepository.findAByModeloAndDescricao(pageRequest, searchTerm);
+        List<Oferta> ofertasFiltradas = applyDistanceFilter(ofertas.getContent(), maxDistance, userCoordinates);
+
+        while (ofertasFiltradas.size() < pageRequest.getPageSize() && ofertas.hasNext()) {
+            pageRequest = (PageRequest) ofertas.nextPageable();
+            ofertas = ofertaRepository.findAByModeloAndDescricao(pageRequest, searchTerm);
+            ofertasFiltradas.addAll(applyDistanceFilter(ofertas.getContent(), maxDistance, userCoordinates));
+        }
+
+        return new PageImpl<>(ofertasFiltradas, pageRequest, ofertasFiltradas.size());
+    }
+
+    private List<Oferta> applyDistanceFilter(List<Oferta> ofertas, int maxDistance,
+                                             CoordinatesDTO userCoordinates) {
+        return ofertas.stream()
+                .filter(oferta -> MapboxDistanceService.getDistanceInKilometer(userCoordinates,
+                        new CoordinatesDTO(oferta.getLatitude(), oferta.getLongitude())) <= maxDistance)
+                .collect(Collectors.toList());
     }
 
 }

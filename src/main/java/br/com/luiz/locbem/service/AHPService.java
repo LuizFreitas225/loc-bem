@@ -41,7 +41,7 @@ public class AHPService {
                             (ofertaNormalizada.getQuilometragem() * pesos.get("quilometragem")) +
                             (ofertaNormalizada.getTipoVeiculo() * pesos.get("tipoVeiculo")) +
                             (ofertaNormalizada.getCombustivel() * pesos.get("combustivel")) +
-                            (ofertaNormalizada.getTipoVeiculo() * pesos.get("estadoVeiculo")) +
+                            (ofertaNormalizada.getEstadoVeiculo() * pesos.get("estadoVeiculo")) +
                             (ofertaNormalizada.getCaracteristicas() * pesos.get("caracteristicas"));
 
             ofertaComPontuacaoList.get(i).setPontuacao(pontuacao);
