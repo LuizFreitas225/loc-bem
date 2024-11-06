@@ -2,6 +2,7 @@ package br.com.luiz.locbem.handler;
 
 import br.com.luiz.locbem.constant.ErrorMessage;
 import br.com.luiz.locbem.exception.*;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserIsInactiveException.class)
     public ResponseEntity<Object> userIsInactive(UserIsDeletedException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.INACTIVE_STATUS, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ImageNotFoundException.class)
+    public ResponseEntity<Object> ImageNotFoundException(ImageNotFoundException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.IMAGEM_NOT_FOUND, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OfertaNotFoundException.class)
@@ -64,6 +70,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MapBoxException.class)
     public ResponseEntity<Object> MapBoxException(MapBoxException exception) {
         return new ResponseEntity(new ExceptionDetails(ErrorMessage.MAPBOX_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ProcessImageException.class)
+    public ResponseEntity<Object> ProcessImageException(ProcessImageException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.MAX_SIZE_LENGTH, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    public ResponseEntity<Object> FileSizeLimitExceededException(ProcessImageException exception) {
+        return new ResponseEntity(new ExceptionDetails(ErrorMessage.PROCESS_IMAGE_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
