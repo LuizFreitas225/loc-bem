@@ -37,25 +37,25 @@ public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .cors().and()  // Ativa o suporte ao CORS
-//                .authorizeRequests()
-//                .anyRequest().authenticated()  // Configura a autenticação para as requisições
-//                .and()
-//                .oauth2Login(); // Configuração para OAuth2
-//    }
-//
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowCredentials(true);
-//        config.addAllowedOriginPattern("*"); // Permite todas as origens
-//        config.addAllowedHeader("*"); // Permite todos os cabeçalhos
-//        config.addAllowedMethod("*"); // Permite todos os métodos (GET, POST, PUT, DELETE, etc.)
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors().and()  // Ativa o suporte ao CORS
+                .authorizeRequests()
+                .anyRequest().authenticated()  // Configura a autenticação para as requisições
+                .and()
+                .oauth2Login(); // Configuração para OAuth2
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*"); // Permite todas as origens
+        config.addAllowedHeader("*"); // Permite todos os cabeçalhos
+        config.addAllowedMethod("*"); // Permite todos os métodos (GET, POST, PUT, DELETE, etc.)
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
 }

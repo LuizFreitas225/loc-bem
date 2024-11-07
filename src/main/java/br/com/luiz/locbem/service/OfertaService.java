@@ -3,13 +3,10 @@ package br.com.luiz.locbem.service;
 import br.com.luiz.locbem.dto.georeferencing.CoordinatesDTO;
 import br.com.luiz.locbem.exception.ForbiddenException;
 import br.com.luiz.locbem.exception.OfertaNotFoundException;
-import br.com.luiz.locbem.exception.ProcessImageException;
-import br.com.luiz.locbem.model.offer.Imagem;
 import br.com.luiz.locbem.model.offer.Oferta;
 import br.com.luiz.locbem.model.offer.OfertaComPontuacao;
 import br.com.luiz.locbem.model.user.PreferenciaUsuario;
 import br.com.luiz.locbem.model.user.User;
-import br.com.luiz.locbem.repository.ImagemRepository;
 import br.com.luiz.locbem.repository.OfertaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,20 +14,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class OfertaService {
     private final OfertaRepository ofertaRepository;
-    private final ImagemRepository imagemRepository;
     private final UserService userService;
     private final AHPService ahpService;
 
@@ -39,55 +31,6 @@ public class OfertaService {
         User user = validCurrentUser();
         oferta.setUser(user);
         return ofertaRepository.save(oferta);
-    }
-
-    @Transactional
-    public void adicionarImagens(Long ofertaId, List<MultipartFile> arquivosImagens) throws IOException {
-        Oferta oferta = ofertaRepository.findById(ofertaId).orElseThrow(OfertaNotFoundException::new);
-        removeAllImagensByOferta(oferta);
-
-        // Converter cada arquivo de imagem em uma entidade Imagem, salvar, e gerar URLs
-        List<Imagem> imagens = arquivosImagens.stream().map(arquivoImagem -> {
-            Imagem imagem = new Imagem();
-            try {
-                imagem.setByteImage(arquivoImagem.getBytes());
-                // Salva a imagem inicialmente para obter o ID
-                imagem = imagemRepository.save(imagem);
-                gerarLinkDaImagem(imagem);
-
-                return imagem;
-            } catch (IOException e) {
-                throw new ProcessImageException();
-            }
-        }).collect(Collectors.toList());
-
-        // Adiciona as novas imagens à oferta e salva a oferta
-        oferta.getImagens().addAll(imagens);
-        ofertaRepository.save(oferta);
-    }
-
-    private void gerarLinkDaImagem(Imagem imagem) {
-        // Cria a URL usando o ID gerado
-        String linkImagem = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/imagem/")
-                .path(String.valueOf(imagem.getId()))
-                .toUriString();
-
-        imagem.setLinkImage(linkImagem);
-
-        // Atualiza o link da imagem e salva novamente
-         imagemRepository.save(imagem);
-    }
-
-    private void removeAllImagensByOferta(Oferta oferta) {
-        imagemRepository.deleteAll(oferta.getImagens());
-        oferta.getImagens().clear();
-        ofertaRepository.save(oferta);
-    }
-
-    public List<Imagem> getImagensByOfertaId(long ofertaId) {
-        Oferta oferta = ofertaRepository.findById(ofertaId).orElseThrow(OfertaNotFoundException::new);
-        return oferta.getImagens();
     }
 
     @Transactional
@@ -110,8 +53,10 @@ public class OfertaService {
         List<OfertaComPontuacao> ofertasComPontuacaoList = ahpService.calcularPontuacao(preferenciaUsuario, ofertas.getContent());
 
         ofertasComPontuacaoList.sort(Comparator.comparing(OfertaComPontuacao::getPontuacao).reversed());
-        Page<OfertaComPontuacao> ofertasComPontuacao = new PageImpl<>(ofertasComPontuacaoList, pageRequest, ofertas.getTotalElements());
 
+
+
+        Page<OfertaComPontuacao> ofertasComPontuacao = new PageImpl<>(ofertasComPontuacaoList, pageRequest, ofertas.getTotalElements());
 
         return ofertasComPontuacao;
     }

@@ -3,8 +3,6 @@ package br.com.luiz.locbem.constant;
 public final class ErrorMessage {
     public static final String USER_NOT_FOUND = "Usuário não encontrado";
     public static final String OFERTA_NOT_FOUND = "Oferta não encontrada";
-    public static final String IMAGEM_NOT_FOUND = "Imagem não encontrada";
-
     public static final String NAME_IS_MANDATORY = "Nome é obrigatório";
     public static final String EMAIL_IS_MANDATORY = "Email é obrigatório";
     public static final String PASSWORD_IS_MANDATORY = "Senha é obrigatória";
@@ -26,8 +24,5 @@ public final class ErrorMessage {
     public static final String PERSON_REGISTRATION_IS_EMPTY = "O registro de pessoa está vazio";
     public static final String ACCESS_DENIED = "Acesso negado para realizar esta ação.";
     public static final String MAPBOX_ERROR = "Ocorreu um erro momentâneo, tente novamente mais tarde ou entre em contato com o suporte.";
-    public static final String PROCESS_IMAGE_ERROR = "Erro ao processar imagem.";
-    public static final String MAX_SIZE_LENGTH = "A imagem deve ter no maximo 10MB";
-
 
 }

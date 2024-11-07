@@ -18,7 +18,7 @@ public class OfertaComPontuacao {
     private Double latitude;
     private Double longitude;
     private int userId;
-    private List<String> linkImagens;
+    private List<String> imagens;
     private TipoVeiculo tipoVeiculo;
     private Combustivel combustivel;
     private EstadoVeiculo estadoVeiculo;

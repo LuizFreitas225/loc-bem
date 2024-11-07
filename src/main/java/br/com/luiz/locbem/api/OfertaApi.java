@@ -3,7 +3,6 @@ package br.com.luiz.locbem.api;
 import br.com.luiz.locbem.dto.oferta.CreateOfertaDTO;
 import br.com.luiz.locbem.dto.oferta.OfertaDTO;
 import br.com.luiz.locbem.dto.oferta.UpdateOfertaDTO;
-import br.com.luiz.locbem.model.offer.Imagem;
 import br.com.luiz.locbem.model.offer.Oferta;
 import br.com.luiz.locbem.model.offer.OfertaComPontuacao;
 import br.com.luiz.locbem.model.user.PreferenciaUsuario;
@@ -15,10 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -53,15 +50,5 @@ public class OfertaApi {
     public ResponseEntity<Void> deletarOferta(@PathVariable Long id) {
         ofertaService.deletarOferta(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{id}/imagens")
-    public ResponseEntity<String> adicionarImagens(@PathVariable Long id, @RequestParam("imagens") List<MultipartFile> imagens) {
-        try {
-            ofertaService.adicionarImagens(id, imagens);
-            return ResponseEntity.ok("Imagens adicionadas com sucesso");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar imagens: " + e.getMessage());
-        }
     }
 }
