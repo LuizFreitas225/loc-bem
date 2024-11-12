@@ -36,7 +36,7 @@ public class CriterioService {
         double range = maiorpreco - menorPreco;
         if (range >= 0) {
             for (OfertaComPontuacao oferta : ofertas) {
-                double scoreNormalizado = 10 * (maiorpreco - oferta.getQuilometragem()) / range;
+                double scoreNormalizado = 10 * (maiorpreco - oferta.getPreco()) / range;
                 oferta.getOfertaNormalizada().setPreco(scoreNormalizado);
             }
         }

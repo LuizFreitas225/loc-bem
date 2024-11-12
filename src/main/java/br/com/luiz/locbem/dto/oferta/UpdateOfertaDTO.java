@@ -32,9 +32,6 @@ public class UpdateOfertaDTO {
     @NotNull(message = "A quilometragem não pode ser nula")
     private double quilometragem;
 
-    @NotBlank(message = "A condição não pode estar em branco")
-    private String condicao;
-
     @NotNull(message = "A latitude não pode ser nula")
     private Double latitude;
 

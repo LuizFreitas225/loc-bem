@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "eeaee015-b3df-4ab3-9b15-096314a86281",
+		"name": "loc-bem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15527195"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Luiz2\",\r\n  \"email\": \"luiz2@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"personRegistration\": \"5548465d4220\",\r\n  \"cep\": \"77021-688\",\r\n  \"coordinateY\": \"string\",\r\n  \"coordinateX\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \"id\": 1,\r\n    \"name\": \"Luiz Freitas\",\r\n    \"email\": \"luizfreitas@atech.com.br\",\r\n    \"password\": \"senha2\",\r\n    \"userName\": \"Luiz226\",\r\n    \"status\": \"INACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Paginated Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/?orderBy=id&sort=asc&size=10&searchTerm=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "id"
+								},
+								{
+									"key": "sort",
+									"value": "asc"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "searchTerm",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Authentication",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "secret-id",
+								"username": "client-id"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{base_url}}/oauth/token?grant_type=password&username=luiz@gmail.com&password=123456",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "password"
+								},
+								{
+									"key": "username",
+									"value": "luiz@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								},
+								{
+									"key": "authority",
+									"value": "USER",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Oferta",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"modelo\": \"UNO\",\r\n  \"anoFabricacao\":2013,\r\n  \"anoModelo\": 2013,\r\n  \"preco\": 30000,\r\n  \"descricao\": \"Celta 2013 conservado\",\r\n  \"quilometragem\": 77679,\r\n  \"condicao\": \"string\",\r\n  \"coordenadas\": \"string\",\r\n  \"imagens\": [\r\n    \"link1.com\",\r\n    \"link2.com\" \r\n  ],\r\n  \"tipoVeiculo\": \"AUTOMOVEL_DE_PASSAGEIROS\",\r\n  \"combustivel\": \"GASOLINA\",\r\n  \"estadoVeiculo\": \"NOVO\",\r\n  \"caracteristicas\": [\r\n    \"AR_CONDICIONADO\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/oferta/"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/oferta/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"modelo\": \"Focus\",\r\n    \"anoFabricacao\": 2013,\r\n    \"anoModelo\": 2013,\r\n    \"preco\": 30000.0,\r\n    \"descricao\": \"Focus 2013 conservado\",\r\n    \"quilometragem\": 77679.0,\r\n    \"condicao\": \"string\",\r\n    \"coordenadas\": \"string\",\r\n    \"user\": {\r\n        \"name\": \"Luiz\",\r\n        \"email\": \"luiz@gmail.com\",\r\n        \"cep\": \"77021-688\",\r\n        \"coordinateY\": \"string\",\r\n        \"coordinateX\": \"string\"\r\n    },\r\n    \"imagens\": [\r\n        \"link1.com\",\r\n        \"link2.com\"\r\n    ],\r\n    \"tipoVeiculo\": \"AUTOMOVEL_DE_PASSAGEIROS\",\r\n    \"combustivel\": \"GASOLINA\",\r\n    \"estadoVeiculo\": \"NOVO\",\r\n    \"caracteristicas\": [\r\n        \"AR_CONDICIONADO\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/oferta"
+					},
+					"response": []
+				},
+				{
+					"name": "Paginated Search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pesoPreco\": 1,\r\n  \"pesoQuilometragem\": 1,\r\n  \"pesoTipoVeiculo\": 1,\r\n  \"tipoVeiculo\": [\r\n    \"SEDAN\"\r\n  ],\r\n  \"pesoCombustivel\": 1,\r\n  \"combustivel\": [\r\n    \"GASOLINA\"\r\n  ],\r\n  \"pesoEstadoVeiculo\": 1,\r\n  \"estadoVeiculo\": [\r\n    \"NOVO\"\r\n  ],\r\n  \"pesoCaracteristicas\": 1,\r\n  \"caracteristicas\": [\r\n    \"AR_CONDICIONADO\"\r\n  ],\r\n  \"distanciaMaxima\": 15,\r\n  \"coordenadasUsuario\": {\r\n    \"latitude\": -10.184358,\r\n    \"longitude\": -48.333121\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/oferta/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"oferta",
+								""
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "id",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "searchTerm",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Imagem",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"modelo\": \"UNO\",\r\n  \"anoFabricacao\":2013,\r\n  \"anoModelo\": 2013,\r\n  \"preco\": 30000,\r\n  \"descricao\": \"Celta 2013 conservado\",\r\n  \"quilometragem\": 77679,\r\n  \"condicao\": \"string\",\r\n  \"coordenadas\": \"string\",\r\n  \"imagens\": [\r\n    \"link1.com\",\r\n    \"link2.com\" \r\n  ],\r\n  \"tipoVeiculo\": \"AUTOMOVEL_DE_PASSAGEIROS\",\r\n  \"combustivel\": \"GASOLINA\",\r\n  \"estadoVeiculo\": \"NOVO\",\r\n  \"caracteristicas\": [\r\n    \"AR_CONDICIONADO\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/oferta/"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

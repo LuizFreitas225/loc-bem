@@ -24,8 +24,8 @@ public class Oferta {
     @ManyToOne
     User user;
 
-    @ElementCollection
-    private List<String> imagens;
+    @OneToMany
+    private List<Imagem> imagens;
 
     @Enumerated(EnumType.STRING)
     private TipoVeiculo tipoVeiculo;

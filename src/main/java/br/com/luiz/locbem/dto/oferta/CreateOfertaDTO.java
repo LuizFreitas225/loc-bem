@@ -30,17 +30,11 @@ public class CreateOfertaDTO {
     @NotNull(message = "A quilometragem não pode ser nula")
     private double quilometragem;
 
-    @NotBlank(message = "A condição não pode estar em branco")
-    private String condicao;
-
     @NotNull(message = "A latitude não pode ser nula")
     private Double latitude;
 
     @NotNull(message = "A longitude não pode ser nula")
     private Double longitude;
-
-    @NotEmpty(message = "A lista de imagens não pode estar vazia")
-    private List<String> imagens;
 
     @NotNull(message = "O tipo de veículo não pode ser nulo")
     private TipoVeiculo tipoVeiculo;

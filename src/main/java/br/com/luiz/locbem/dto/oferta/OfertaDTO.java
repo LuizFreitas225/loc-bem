@@ -21,7 +21,6 @@ public class OfertaDTO {
     private double preco;
     private String descricao;
     private double quilometragem;
-    private String condicao;
     private Double latitude;
     private Double longitude;
     private UserDto user;
