@@ -1,0 +1,82 @@
+@startuml
+title Fluxo BPMN de Coleta de Preferências por Chatbot
+skinparam dpi 150
+skinparam document {
+    paperSize A4Landscape
+    margin 10
+}
+
+left to right direction
+
+|Usuário|
+start
+:Solicitar início da interação com o chatbot;
+|Chatbot|
+:Iniciar interação;
+
+:Solicitar importância do preço na decisão (1-10);
+|Usuário|
+:Responder (1-10);
+
+|Chatbot|
+if (Veículo é "NOVO") then (Sim)
+  :Definir quilometragem como peso 10;
+else (Não)
+  :Solicitar importância da quilometragem (1-10);
+|Usuário|
+  :Responder (1-10);
+endif
+
+|Chatbot|
+:Solicitar tipos de veículos preferidos;
+|Usuário|
+:Selecionar tipos de veículos;
+
+|Chatbot|
+:Solicitar importância do tipo de veículo (1-10);
+|Usuário|
+:Responder (1-10);
+
+|Chatbot|
+:Solicitar tipos de combustível preferidos;
+|Usuário|
+:Selecionar tipos de combustível;
+
+|Chatbot|
+:Solicitar importância do tipo de combustível (1-10);
+|Usuário|
+:Responder (1-10);
+
+|Chatbot|
+:Solicitar condições de conservação do veículo;
+|Usuário|
+:Selecionar condições de conservação;
+
+|Chatbot|
+:Solicitar importância do estado de conservação (1-10);
+|Usuário|
+:Responder (1-10);
+
+|Chatbot|
+:Solicitar características adicionais preferidas do veículo;
+|Usuário|
+:Selecionar características adicionais;
+
+|Chatbot|
+:Solicitar importância das características adicionais (1-10);
+|Usuário|
+:Responder (1-10);
+
+|Chatbot|
+:Solicitar distância máxima para buscar o veículo (em km);
+|Usuário|
+:Responder distância máxima;
+
+|API|
+:Processar dados e retornar ofertas;
+
+|Chatbot|
+:Exibir ofertas ao usuário;
+|Usuário|
+stop
+@enduml

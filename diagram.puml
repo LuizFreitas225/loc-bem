@@ -40,16 +40,6 @@ class Usuario {
     -Status status
 }
 
-class PreferenciaUsuario {
-    -int pesoPreco
-    -int pesoQuilometragem
-    -int pesoTipoVeiculo
-    -int pesoCombustivel
-    -int pesoEstadoVeiculo
-    -int pesoCaracteristicas
-    -int distanciaMaxima
-}
-
 enum TipoVeiculo {
     SEDAN, HATCH, COUPE, CONVERTIVEL, SUV, CROSSOVER, MINIVAN, PICKUP, CAMINHAO_LEVE, CAMINHAO_PESADO, VAN, MOTOCICLETA, SCOOTER, BICICLETA, VEICULO_ELETRICO, VEICULO_HIBRIDO, VEICULO_MILITAR, VEICULO_DE_EMERGENCIA, VEICULO_INDUSTRIAL, MOTORHOME, TRAILER, VEICULO_AQUATICO, VEICULO_OFF_ROAD, TRATOR, AERONAVE_LEVE, AERONAVE
 }

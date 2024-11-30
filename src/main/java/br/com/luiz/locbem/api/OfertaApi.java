@@ -26,6 +26,9 @@ import java.util.List;
 public class OfertaApi {
     private final OfertaService ofertaService;
     private final ModelMapper modelMapper;
+
+
+
     @PostMapping
     public ResponseEntity<OfertaDTO> criarOferta(@RequestBody @Valid  CreateOfertaDTO dto) {
         Oferta novaOferta = ofertaService.criarOferta(modelMapper.map(dto, Oferta.class));
@@ -40,6 +43,17 @@ public class OfertaApi {
 
     @GetMapping
     public ResponseEntity<Page<OfertaComPontuacao>> listarOfertas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size,
+            @RequestParam(required = false, defaultValue = "") String searchTerm,
+            @RequestBody() @Valid PreferenciaUsuario preferenciaUsuario) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<OfertaComPontuacao> ofertas = ofertaService.listarOfertas(pageRequest, searchTerm, preferenciaUsuario);
+        return new ResponseEntity<>(ofertas, HttpStatus.OK);
+    }
+
+    @PostMapping("list-as-post")
+    public ResponseEntity<Page<OfertaComPontuacao>> listarOfertasAsPost(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size,
             @RequestParam(required = false, defaultValue = "") String searchTerm,
