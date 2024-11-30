@@ -52,7 +52,7 @@ public class OfertaApi {
         return new ResponseEntity<>(ofertas, HttpStatus.OK);
     }
 
-    @PostMapping("list-as-post")
+    @PostMapping("/list-as-post")
     public ResponseEntity<Page<OfertaComPontuacao>> listarOfertasAsPost(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size,
