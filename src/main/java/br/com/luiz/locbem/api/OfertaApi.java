@@ -1,11 +1,12 @@
 package br.com.luiz.locbem.api;
 
+import br.com.luiz.locbem.dto.georeferencing.CoordinatesDTO;
 import br.com.luiz.locbem.dto.oferta.CreateOfertaDTO;
 import br.com.luiz.locbem.dto.oferta.OfertaDTO;
 import br.com.luiz.locbem.dto.oferta.UpdateOfertaDTO;
-import br.com.luiz.locbem.model.offer.Imagem;
 import br.com.luiz.locbem.model.offer.Oferta;
 import br.com.luiz.locbem.model.offer.OfertaComPontuacao;
+import br.com.luiz.locbem.model.offer.OfertaSemPontuacao;
 import br.com.luiz.locbem.model.user.PreferenciaUsuario;
 import br.com.luiz.locbem.service.OfertaService;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +43,15 @@ public class OfertaApi {
     }
 
     @GetMapping
-    public ResponseEntity<Page<OfertaComPontuacao>> listarOfertas(
+    public ResponseEntity<Page<OfertaSemPontuacao>> listarOfertas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size,
             @RequestParam(required = false, defaultValue = "") String searchTerm,
-            @RequestBody() @Valid PreferenciaUsuario preferenciaUsuario) {
+            @RequestParam(required = true, defaultValue = "") double latitude,
+            @RequestParam(required = true, defaultValue = "") double longitude) {
+
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<OfertaComPontuacao> ofertas = ofertaService.listarOfertas(pageRequest, searchTerm, preferenciaUsuario);
+        Page<OfertaSemPontuacao> ofertas = ofertaService.listarOfertasSemPontuacao(pageRequest,  new CoordinatesDTO(latitude, longitude), searchTerm);
         return new ResponseEntity<>(ofertas, HttpStatus.OK);
     }
 
@@ -59,7 +62,7 @@ public class OfertaApi {
             @RequestParam(required = false, defaultValue = "") String searchTerm,
             @RequestBody() @Valid PreferenciaUsuario preferenciaUsuario) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<OfertaComPontuacao> ofertas = ofertaService.listarOfertas(pageRequest, searchTerm, preferenciaUsuario);
+        Page<OfertaComPontuacao> ofertas = ofertaService.listarOfertasComPreferencia(pageRequest, searchTerm, preferenciaUsuario);
         return new ResponseEntity<>(ofertas, HttpStatus.OK);
     }
 

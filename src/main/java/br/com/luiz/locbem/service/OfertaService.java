@@ -7,11 +7,14 @@ import br.com.luiz.locbem.exception.ProcessImageException;
 import br.com.luiz.locbem.model.offer.Imagem;
 import br.com.luiz.locbem.model.offer.Oferta;
 import br.com.luiz.locbem.model.offer.OfertaComPontuacao;
+import br.com.luiz.locbem.model.offer.OfertaSemPontuacao;
 import br.com.luiz.locbem.model.user.PreferenciaUsuario;
 import br.com.luiz.locbem.model.user.User;
 import br.com.luiz.locbem.repository.ImagemRepository;
 import br.com.luiz.locbem.repository.OfertaRepository;
+import br.com.luiz.locbem.util.ModelMapperUtil;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,8 +105,8 @@ public class OfertaService {
         throw new ForbiddenException();
     }
 
-    public Page<OfertaComPontuacao> listarOfertas(PageRequest pageRequest, String searchTerm,
-                                                  PreferenciaUsuario preferenciaUsuario) {
+    public Page<OfertaComPontuacao> listarOfertasComPreferencia(PageRequest pageRequest, String searchTerm,
+                                                                PreferenciaUsuario preferenciaUsuario) {
 
         Page<Oferta> ofertas = this.findAByModeloAndDescricaoAndFilterForDistance(pageRequest,
                 searchTerm, preferenciaUsuario.getDistanciaMaxima(), preferenciaUsuario.getCoordenadasUsuario());
@@ -114,6 +118,13 @@ public class OfertaService {
 
 
         return ofertasComPontuacao;
+    }
+
+    public Page<OfertaSemPontuacao> listarOfertasSemPontuacao(PageRequest pageRequest, CoordinatesDTO userCoordinates, String searchTerm) {
+        Page<Oferta> ofertas = ofertaRepository.findAByModeloAndDescricao(pageRequest, searchTerm);
+        List<OfertaSemPontuacao> ofertaSemPontuacaoList = ModelMapperUtil.toOfertasemPontuacao(ofertas.toList(), userCoordinates, new ModelMapper());
+
+        return new PageImpl<>(ofertaSemPontuacaoList, pageRequest, ofertas.getTotalElements());
     }
 
     public Oferta buscarOfertaPorId(Long id) {

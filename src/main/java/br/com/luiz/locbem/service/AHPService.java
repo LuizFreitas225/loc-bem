@@ -24,7 +24,7 @@ public class AHPService {
 
         // Definir pesos normalizados
 
-          List<OfertaComPontuacao> ofertaComPontuacaoList = ModelMapperUtil.toOfertaComPontuacao(ofertas, modelMapper);
+          List<OfertaComPontuacao> ofertaComPontuacaoList = ModelMapperUtil.toOfertaComPontuacao(ofertas, preferencias.getCoordenadasUsuario(), modelMapper);
 
         if( preferencias == null ){
             return ofertaComPontuacaoList;

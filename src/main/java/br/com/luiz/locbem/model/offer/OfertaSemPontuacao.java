@@ -6,7 +6,7 @@ import java.util.List;
 
 
 @Data
-public class OfertaComPontuacao {
+public class OfertaSemPontuacao {
 
     private Long id;
     private String modelo;
@@ -24,8 +24,5 @@ public class OfertaComPontuacao {
     private EstadoVeiculo estadoVeiculo;
     private List<CaracteristicaVeiculo> caracteristica;
     private double distanciaEmKM;
-
-    private double pontuacao;
-    private OfertaNormalizada  ofertaNormalizada = new OfertaNormalizada();
 
 }
