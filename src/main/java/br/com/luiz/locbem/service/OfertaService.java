@@ -24,9 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,9 +125,12 @@ public class OfertaService {
         return new PageImpl<>(ofertaSemPontuacaoList, pageRequest, ofertas.getTotalElements());
     }
 
-    public Oferta buscarOfertaPorId(Long id) {
-        return ofertaRepository.findById(id)
+    public OfertaSemPontuacao buscarOfertaPorId(Long id, CoordinatesDTO userCoordinates) {
+        Oferta oferta =  ofertaRepository.findById(id)
                 .orElseThrow(OfertaNotFoundException::new);
+
+        List<OfertaSemPontuacao> ofertaSemPontuacaoList = ModelMapperUtil.toOfertasemPontuacao(List.of(oferta), userCoordinates, new ModelMapper());
+        return  ofertaSemPontuacaoList.get(0);
     }
 
     public void deletarOferta(Long id) {

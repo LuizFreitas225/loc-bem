@@ -72,6 +72,14 @@ public class OfertaApi {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<OfertaSemPontuacao> buscarPorId(@PathVariable Long id,
+                                                          @RequestParam(required = true, defaultValue = "") double latitude,
+                                                          @RequestParam(required = true, defaultValue = "") double longitude) {
+        OfertaSemPontuacao oferta =  ofertaService.buscarOfertaPorId(id, new CoordinatesDTO(latitude, longitude));
+        return ResponseEntity.ok(oferta);
+    }
+
     @PostMapping("/{id}/imagens")
     public ResponseEntity<String> adicionarImagens(@PathVariable Long id, @RequestParam("imagens") List<MultipartFile> imagens) {
         try {

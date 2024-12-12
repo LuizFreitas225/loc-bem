@@ -24,7 +24,7 @@ public class CriterioService {
 
         // Encontrar a menor e a maior quilometragem
         for (OfertaComPontuacao oferta : ofertas) {
-            if (oferta.getPreco() < menorPreco) {
+            if (oferta.getPreco() < menorPreco || menorPreco == 0 ) {
                 menorPreco = oferta.getPreco();
             }
             if (oferta.getPreco() > maiorpreco) {
@@ -48,7 +48,7 @@ public class CriterioService {
 
         // Encontrar a menor e a maior quilometragem
         for (OfertaComPontuacao oferta : ofertas) {
-            if (oferta.getQuilometragem() < menorQuilometragem) {
+            if (oferta.getQuilometragem() < menorQuilometragem || menorQuilometragem == 0) {
                 menorQuilometragem = oferta.getQuilometragem();
             }
             if (oferta.getQuilometragem() > maiorQuilometragem) {

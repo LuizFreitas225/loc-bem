@@ -12,7 +12,7 @@ public class ExceptionDetails {
 
     public ExceptionDetails(String message, int status) {
         this.message = message;
-        this.status = status;
-        this.timestamp = LocalDateTime.now();
+            this.status = status;
+            this.timestamp = LocalDateTime.now();
     }
 }
